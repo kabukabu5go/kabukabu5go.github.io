@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCP 3-Way Handshake Monitor</title>
+    <script>
+        async function fetchHandshakes() {
+            const response = await fetch('/handshakes');
+            const data = await response.json();
+            const container = document.getElementById('handshake-data');
+            container.innerHTML = '';
+            
+            data.forEach(packet => {
+                const packetDiv = document.createElement('div');
+                packetDiv.classList.add('packet');
+                packetDiv.innerHTML = `<strong>${packet.step}</strong> - ${packet.src} ➝ ${packet.dst} <br> Options: ${JSON.stringify(packet.options || {})}`;
+                container.appendChild(packetDiv);
+            });
+        }
+
+        setInterval(fetchHandshakes, 2000);
+    </script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .packet { border: 1px solid #ccc; padding: 10px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>TCP 3-Way Handshake Monitor</h1>
+    <div id="handshake-data">Loading...</div>
+</body>
+</html>
